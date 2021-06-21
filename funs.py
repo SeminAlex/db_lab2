@@ -1,5 +1,5 @@
 import psycopg2
-from sql import sql_functions
+from sql import sql_functions, sql_admin_functions
 
 
 class DataBase:
@@ -23,7 +23,7 @@ class DataBase:
                                                    host="127.0.0.1", port="5432")
                 self.connection.autocommit = True
                 self.cursor = self.connection.cursor()
-                self.cursor.execute(sql_functions)
+                self.cursor.execute(sql_admin_functions)
                 self.cursor.execute(f"""SELECT create_database()""")
                 self.connection.close()
                 self.connect()
@@ -31,7 +31,8 @@ class DataBase:
                 self.cursor.execute(f"""SELECT create_fixes_info()""")
                 self.is_created = True
                 return True
-        except:
+        except BaseException as e:
+            print(e)
             self.is_damaged = True
             return False
         else:

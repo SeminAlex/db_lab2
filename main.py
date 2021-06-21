@@ -11,7 +11,10 @@ def create_database():
     status = db.create_database()
 
     if not status:
-        messagebox.showinfo("Information", "DB is already created! Opening DB.")
+        if db.is_damaged:
+            messagebox.showinfo("Information", "DB is Damaged. Sorry")
+        else:
+            messagebox.showinfo("Information", "DB is already created! Opening DB.")
     global cardsWindow, fixesWindow
     if cardsWindow is None and fixesWindow is None:
         cardsWindow = CardsWindow()

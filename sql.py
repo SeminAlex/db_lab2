@@ -1,11 +1,11 @@
-sql_functions = """
+sql_admin_functions = """
 
 CREATE EXTENSION IF NOT EXISTS dblink;
 CREATE OR REPLACE FUNCTION create_database() RETURNS void AS
 $$
 	BEGIN
 		IF NOT EXISTS (SELECT FROM pg_database WHERE datname = 'hearthstone') THEN
-			PERFORM dblink_exec('dbname=postgres user=postgres password=postgres',
+			PERFORM dblink_exec('dbname=postgres user=postgres password=postgres', -- mmm...yammy
 			'CREATE DATABASE hearthstone');
 		END IF;
 	END
@@ -28,9 +28,9 @@ LANGUAGE plpgsql;
 /* ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 ||||||||||||||||||||||||||||||||||||||||||||||||||||    DB CREATION    ||||||||||||||||||||||||||||||||||||||||||||||||
 |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| */
+"""
 
-
-
+sql_functions  = """
 CREATE OR REPLACE FUNCTION create_cards_info() RETURNS void AS
 $$
 	BEGIN
@@ -43,7 +43,7 @@ $$
 			attack integer NOT NULL,
 			health integer NOT NULL DEFAULT 0);
 
-			CREATE INDEX on hscards(nickname);
+			CREATE INDEX on hscards(name);
 	END
 $$
 LANGUAGE plpgsql;
@@ -52,7 +52,7 @@ LANGUAGE plpgsql;
 CREATE OR REPLACE FUNCTION create_fixes_info() RETURNS void AS
 $$
 	BEGIN
-			CREATE TABLE IF NOT EXISTS fixes(
+			CREATE TABLE IF NOT EXISTS event(
 			id integer PRIMARY KEY,
 			new_description text NOT NULL,
 			card_id integer NOT NULL,
@@ -275,4 +275,5 @@ $$
     END;
 $$
 LANGUAGE plpgsql;
+
 """
